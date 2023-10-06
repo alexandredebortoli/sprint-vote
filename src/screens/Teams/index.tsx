@@ -7,6 +7,7 @@ import Header from "@components/Header";
 import Highlight from "@components/Highlight";
 import TeamCard from "@components/TeamCard";
 import EmptyList from "@components/EmptyList";
+import { Button } from "@components/Button";
 
 export default function Teams() {
     const [teams, setTeams] = useState<string[]>(["Team 1", "Team 2"]);
@@ -29,6 +30,8 @@ export default function Teams() {
                     <EmptyList message="👀 What about creating your first team?" />
                 )}
             />
+
+            <Button title="Create new team" />
         </Container>
     );
 }
