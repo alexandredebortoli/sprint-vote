@@ -22,7 +22,7 @@ export default function Header({
     };
 
     return (
-        <Container>
+        <Container $singleChild={!showBackButton}>
             {showBackButton && (
                 <HeaderButton>
                     <BackIcon />

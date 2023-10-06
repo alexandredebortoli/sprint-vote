@@ -1,12 +1,13 @@
 import styled from "styled-components/native";
 import { CaretLeft, UserCircle, SignOut } from "phosphor-react-native";
 
-export const Container = styled.View`
+export const Container = styled.View<{ $singleChild?: boolean }>`
     width: 100%;
 
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: ${(props) =>
+        props.$singleChild ? "flex-end" : "space-between"};
 `;
 
 export const HeaderButton = styled.TouchableOpacity``;
