@@ -9,6 +9,7 @@ import { StatusBar } from "react-native";
 import theme from "@theme/index";
 import Loading from "@components/Loading";
 import Teams from "@screens/Teams";
+import NewTeam from "@screens/NewTeam";
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -24,7 +25,7 @@ export default function App() {
                     backgroundColor="transparent"
                     translucent
                 />
-                {fontsLoaded ? <Teams /> : <Loading />}
+                {fontsLoaded ? <NewTeam /> : <Loading />}
             </>
         </ThemeProvider>
     );
