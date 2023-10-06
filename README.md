@@ -13,3 +13,4 @@ SprintVote is an open-source React Native Expo app designed to streamline and en
 ## Dependencies
 
 -   Babel Plugin Module Resolver
+-   styled component
