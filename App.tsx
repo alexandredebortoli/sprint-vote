@@ -13,6 +13,8 @@ import Loading from "@components/Loading";
 import Teams from "@screens/Teams";
 import NewTeam from "@screens/NewTeam";
 import Team from "@screens/Team";
+import SignIn from "@screens/SignIn";
+import SignUp from "@screens/SignUp";
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -28,7 +30,7 @@ export default function App() {
                     backgroundColor="transparent"
                     translucent
                 />
-                {fontsLoaded ? <Team /> : <Loading />}
+                {fontsLoaded ? <SignUp /> : <Loading />}
             </>
         </ThemeProvider>
     );
