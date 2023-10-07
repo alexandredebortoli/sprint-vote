@@ -8,8 +8,15 @@ import {
 } from "./styles";
 import { Button } from "@components/Button";
 import Input from "@components/Input";
+import { useNavigation } from "@react-navigation/native";
 
 export default function SignIn() {
+    const navigation = useNavigation();
+
+    function handleCreateAccount() {
+        navigation.navigate("signUp");
+    }
+
     return (
         <Container>
             <AuthHeader />
@@ -37,6 +44,7 @@ export default function SignIn() {
                 <Button
                     title="Create account"
                     outline
+                    onPress={handleCreateAccount}
                 />
             </CreateAccountContainer>
         </Container>
