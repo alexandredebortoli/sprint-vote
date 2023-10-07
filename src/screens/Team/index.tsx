@@ -6,13 +6,16 @@ import Input from "@components/Input";
 import { FlatList } from "react-native";
 import Filter from "@components/Filter";
 import { useState } from "react";
+import InfoCard from "@components/InfoCard";
+import EmptyList from "@components/EmptyList";
+import { Button } from "@components/Button";
 
 export default function Team() {
     const tabs = ["members", "game history"];
 
     const [tab, setTab] = useState<string>(tabs[0]);
-    const [members, setMembers] = useState<string[]>([]);
-    const [gameHistories, setGameHistories] = useState<string[]>([]);
+    const [members, setMembers] = useState<string[]>(["Alexandre"]);
+    const [gameHistories, setGameHistories] = useState<string[]>(["Game #2"]);
 
     return (
         <Container>
@@ -49,6 +52,36 @@ export default function Team() {
                     {tab === tabs[0] ? members.length : gameHistories.length}
                 </NumberOfItems>
             </HeaderList>
+
+            <FlatList
+                data={members}
+                keyExtractor={(item) => item}
+                renderItem={({ item }) => (
+                    <InfoCard
+                        name={item}
+                        icon={tab === tabs[0] ? "person" : "history"}
+                        closable={tab === tabs[0] ? true : false}
+                        onRemove={() => {}}
+                    />
+                )}
+                ListEmptyComponent={() => (
+                    <EmptyList message="There are no members on the team." />
+                )}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={[
+                    { paddingBottom: 100 },
+                    members.length === 0 && { flex: 1 },
+                ]}
+            />
+
+            <Button
+                title="Start game"
+                style={{ marginBottom: 16 }}
+            />
+            <Button
+                title="Team settings"
+                outline
+            />
         </Container>
     );
 }
