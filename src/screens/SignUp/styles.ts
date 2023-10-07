@@ -13,6 +13,7 @@ export const Container = styled(SafeAreaView)`
 export const Form = styled.View`
     width: 100%;
     justify-content: center;
+    flex: 1;
 `;
 
 export const FormTitle = styled.Text`
@@ -24,4 +25,10 @@ export const FormTitle = styled.Text`
     `};
 
     margin-bottom: 32px;
+`;
+
+export const ReturnLoginContainer = styled.View`
+    width: 100%;
+    justify-content: flex-end;
+    flex: 1;
 `;
