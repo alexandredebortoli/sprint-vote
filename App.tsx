@@ -10,11 +10,7 @@ import theme from "@theme/index";
 
 import Loading from "@components/Loading";
 
-import Teams from "@screens/Teams";
-import NewTeam from "@screens/NewTeam";
-import Team from "@screens/Team";
-import SignIn from "@screens/SignIn";
-import SignUp from "@screens/SignUp";
+import { Routes } from "@routes/index";
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -30,7 +26,7 @@ export default function App() {
                     backgroundColor="transparent"
                     translucent
                 />
-                {fontsLoaded ? <SignUp /> : <Loading />}
+                {fontsLoaded ? <Routes /> : <Loading />}
             </>
         </ThemeProvider>
     );

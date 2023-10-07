@@ -1,9 +1,16 @@
 import AuthHeader from "@components/AuthHeader";
-import { Container, Form, FormTitle } from "./styles";
+import { Container, Form, FormTitle, ReturnLoginContainer } from "./styles";
 import { Button } from "@components/Button";
 import Input from "@components/Input";
+import { useNavigation } from "@react-navigation/native";
 
 export default function SignUp() {
+    const navigation = useNavigation();
+
+    function handleReturnLogin() {
+        navigation.navigate("signIn");
+    }
+
     return (
         <Container>
             <AuthHeader />
@@ -40,10 +47,13 @@ export default function SignUp() {
                 <Button title="Access" />
             </Form>
 
-            <Button
-                title="Return to login"
-                outline
-            />
+            <ReturnLoginContainer>
+                <Button
+                    title="Return to login"
+                    outline
+                    onPress={handleReturnLogin}
+                />
+            </ReturnLoginContainer>
         </Container>
     );
 }
