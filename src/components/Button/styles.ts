@@ -5,6 +5,7 @@ export type ButtonTypeStyleProps = "PRIMARY" | "SECONDARY";
 
 type Props = {
     type: ButtonTypeStyleProps;
+    outline: boolean;
 };
 
 export const Container = styled(TouchableOpacity)<Props>`
@@ -13,8 +14,19 @@ export const Container = styled(TouchableOpacity)<Props>`
     min-height: 56px;
     max-height: 56px;
 
-    background-color: ${({ theme, type }) =>
-        type === "PRIMARY" ? theme.COLORS.BLUE_700 : theme.COLORS.RED_DARK};
+    ${({ outline, theme, type }) =>
+        outline
+            ? css`
+                  border: 1px solid
+                      ${type === "PRIMARY"
+                          ? theme.COLORS.BLUE_700
+                          : theme.COLORS.RED_DARK};
+              `
+            : css`
+                  background-color: ${type === "PRIMARY"
+                      ? theme.COLORS.BLUE_700
+                      : theme.COLORS.RED_DARK};
+              `}
 
     border-radius: 6px;
 
@@ -22,10 +34,14 @@ export const Container = styled(TouchableOpacity)<Props>`
     align-items: center;
 `;
 
-export const Title = styled.Text`
-    ${({ theme }) => css`
+export const Title = styled.Text<Props>`
+    ${({ outline, theme, type }) => css`
         font-size: ${theme.FONT_SIZE.MD}px;
-        color: ${theme.COLORS.WHITE};
         font-family: ${theme.FONT_FAMILY.BOLD};
+        color: ${outline
+            ? type === "PRIMARY"
+                ? theme.COLORS.BLUE_500
+                : theme.COLORS.RED
+            : theme.COLORS.WHITE};
     `};
 `;
