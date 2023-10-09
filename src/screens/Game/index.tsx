@@ -9,7 +9,7 @@ import { SelectionCard } from "@components/SelectionCard";
 
 export default function Game() {
     const [players, setPlayers] = useState([
-        "Ale",
+        "Alexandre",
         "Rafael",
         "Sophie",
         "Nicolas",
@@ -25,6 +25,13 @@ export default function Game() {
         "João",
     ]);
     const [points, setPoints] = useState(["0", "1", "2", "3", "5", "8", "13"]);
+    const [selectedCard, setSelectedCard] = useState<string>();
+
+    const currentUser = "Alexandre";
+
+    function handleCardSelection(value: string) {
+        setSelectedCard(value);
+    }
 
     return (
         <Container>
@@ -42,7 +49,12 @@ export default function Game() {
                 data={players}
                 keyExtractor={(item) => item}
                 numColumns={3}
-                renderItem={({ item }) => <PlayerCard name={item} />}
+                renderItem={({ item }) => (
+                    <PlayerCard
+                        name={item}
+                        selected={item === currentUser && selectedCard != null}
+                    />
+                )}
                 showsVerticalScrollIndicator={false}
                 ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
                 columnWrapperStyle={{ justifyContent: "space-around" }}
@@ -53,7 +65,13 @@ export default function Game() {
                 <FlatList
                     data={points}
                     keyExtractor={(item) => item}
-                    renderItem={({ item }) => <SelectionCard title={item} />}
+                    renderItem={({ item }) => (
+                        <SelectionCard
+                            title={item}
+                            active={item === selectedCard}
+                            onPress={() => handleCardSelection(item)}
+                        />
+                    )}
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     ItemSeparatorComponent={() => (

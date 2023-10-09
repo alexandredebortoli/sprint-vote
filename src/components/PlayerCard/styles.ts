@@ -7,11 +7,12 @@ export const Container = styled.View`
     text-align: center;
 `;
 
-export const Card = styled.View`
+export const Card = styled.View<{ $selected: boolean }>`
     width: 55px;
     height: 80px;
     border-radius: 6px;
-    background-color: ${({ theme }) => theme.COLORS.GRAY_300};
+    background-color: ${({ theme, $selected }) =>
+        $selected ? theme.COLORS.BLUE_700 : theme.COLORS.GRAY_300};
     margin-bottom: 8px;
 `;
 
