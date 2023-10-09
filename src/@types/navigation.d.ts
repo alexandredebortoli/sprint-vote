@@ -6,6 +6,7 @@ export declare global {
             teams: undefined;
             newTeam: undefined;
             team: undefined;
+            game: undefined;
         }
     }
 }
