@@ -8,8 +8,8 @@ import { useNavigation } from "@react-navigation/native";
 export default function NewTeam() {
     const navigation = useNavigation();
 
-    async function handleNew() {
-        navigation.navigate("team", { teamName: "Team name" });
+    function handleNew() {
+        navigation.navigate("team");
     }
     return (
         <Container>
