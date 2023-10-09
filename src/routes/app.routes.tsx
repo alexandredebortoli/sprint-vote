@@ -2,6 +2,7 @@ import {
     NativeStackNavigationProp,
     createNativeStackNavigator,
 } from "@react-navigation/native-stack";
+import Game from "@screens/Game";
 
 import NewTeam from "@screens/NewTeam";
 import Team from "@screens/Team";
@@ -11,6 +12,7 @@ type AppRoutes = {
     teams: undefined;
     newTeam: undefined;
     team: undefined;
+    game: undefined;
 };
 
 export type AppNavigatorRoutesProps = NativeStackNavigationProp<AppRoutes>;
@@ -34,6 +36,10 @@ export function AppRoutes() {
             <Screen
                 name="team"
                 component={Team}
+            />
+            <Screen
+                name="game"
+                component={Game}
             />
         </Navigator>
     );

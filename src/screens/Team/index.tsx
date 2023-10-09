@@ -9,6 +9,7 @@ import { useState } from "react";
 import InfoCard from "@components/InfoCard";
 import EmptyList from "@components/EmptyList";
 import { Button } from "@components/Button";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Team() {
     const tabs = ["members", "game history"];
@@ -16,6 +17,12 @@ export default function Team() {
     const [tab, setTab] = useState<string>(tabs[0]);
     const [members, setMembers] = useState<string[]>(["Alexandre"]);
     const [gameHistories, setGameHistories] = useState<string[]>(["Game #2"]);
+
+    const navigation = useNavigation();
+
+    function handleStartGame() {
+        navigation.navigate("game");
+    }
 
     return (
         <Container>
@@ -54,7 +61,7 @@ export default function Team() {
             </HeaderList>
 
             <FlatList
-                data={members}
+                data={tab === tabs[0] ? members : gameHistories}
                 keyExtractor={(item) => item}
                 renderItem={({ item }) => (
                     <InfoCard
@@ -77,6 +84,7 @@ export default function Team() {
             <Button
                 title="Start game"
                 style={{ marginBottom: 16 }}
+                onPress={handleStartGame}
             />
             <Button
                 title="Team settings"
