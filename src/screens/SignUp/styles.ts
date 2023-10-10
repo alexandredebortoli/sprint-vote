@@ -13,7 +13,7 @@ export const Container = styled(SafeAreaView)`
 export const Form = styled.View`
     width: 100%;
     justify-content: center;
-    flex: 1;
+    flex: 12;
 `;
 
 export const FormTitle = styled.Text`
