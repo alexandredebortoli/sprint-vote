@@ -17,3 +17,5 @@ SprintVote is an open-source React Native Expo app designed to streamline and en
 -   Expo google fonts (Roboto)
 -   Phosphor react native
 -   React native svg
+-   React Hook Form
+-   Yup
