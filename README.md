@@ -19,3 +19,4 @@ SprintVote is an open-source React Native Expo app designed to streamline and en
 -   React native svg
 -   React Hook Form
 -   Yup
+-   Axios

@@ -6,6 +6,10 @@ import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { api } from "@services/api";
+import axios from "axios";
+import { Alert } from "react-native";
+import { AppError } from "@utils/AppError";
 
 type FormDataProps = {
     name: string;
@@ -44,8 +48,28 @@ export default function SignUp() {
         navigation.navigate("signIn");
     }
 
-    function handleSignUp(data: FormDataProps) {
-        console.log(data);
+    async function handleSignUp({
+        name,
+        username,
+        email,
+        password,
+    }: FormDataProps) {
+        try {
+            const response = await api.post("/players", {
+                name,
+                username,
+                email,
+                password,
+            });
+            console.log(await response.data);
+        } catch (error) {
+            const isAppError = error instanceof AppError;
+            const alertMessage = isAppError
+                ? error.message
+                : "Unable to create account. Try again later.";
+
+            Alert.alert(alertMessage);
+        }
     }
 
     return (
@@ -129,7 +153,7 @@ export default function SignUp() {
                 />
 
                 <Button
-                    title="Access"
+                    title="Create and access"
                     onPress={handleSubmit(handleSignUp)}
                 />
             </Form>
