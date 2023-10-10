@@ -24,6 +24,9 @@
       ],
       "@dtos/*": [
         "./src/dtos/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
       ]
     }
   }
