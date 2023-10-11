@@ -11,6 +11,8 @@ import axios from "axios";
 import { Alert } from "react-native";
 import { AppError } from "@utils/AppError";
 import { useAuth } from "@hooks/useAuth";
+import { useState } from "react";
+import Loading from "@components/Loading";
 
 type FormDataProps = {
     name: string;
@@ -35,6 +37,8 @@ const signUpSchema = yup.object({
 });
 
 export default function SignUp() {
+    const [isLoading, setIsLoading] = useState(false);
+
     const {
         control,
         handleSubmit,
@@ -58,6 +62,7 @@ export default function SignUp() {
         password,
     }: FormDataProps) {
         try {
+            setIsLoading(true);
             await api.post("/players", {
                 name,
                 username,
@@ -71,6 +76,7 @@ export default function SignUp() {
                 ? error.message
                 : "Unable to create account. Try again later.";
 
+            setIsLoading(false);
             Alert.alert(alertMessage);
         }
     }
@@ -78,88 +84,93 @@ export default function SignUp() {
     return (
         <Container>
             <AuthHeader />
-            <Form>
-                <FormTitle>Create your account</FormTitle>
 
-                <Controller
-                    control={control}
-                    name="name"
-                    render={({ field: { onChange, value } }) => (
-                        <Input
-                            placeholder="Name"
-                            autoCapitalize="none"
-                            style={{ marginBottom: 16 }}
-                            onChangeText={onChange}
-                            value={value}
-                            errorMessage={errors.name?.message}
-                        />
-                    )}
-                />
-                <Controller
-                    control={control}
-                    name="username"
-                    render={({ field: { onChange, value } }) => (
-                        <Input
-                            placeholder="Username"
-                            autoCapitalize="none"
-                            style={{ marginBottom: 16 }}
-                            onChangeText={onChange}
-                            value={value}
-                            errorMessage={errors.username?.message}
-                        />
-                    )}
-                />
-                <Controller
-                    control={control}
-                    name="email"
-                    render={({ field: { onChange, value } }) => (
-                        <Input
-                            placeholder="E-mail"
-                            keyboardType="email-address"
-                            autoCapitalize="none"
-                            style={{ marginBottom: 16 }}
-                            onChangeText={onChange}
-                            value={value}
-                            errorMessage={errors.email?.message}
-                        />
-                    )}
-                />
-                <Controller
-                    control={control}
-                    name="password"
-                    render={({ field: { onChange, value } }) => (
-                        <Input
-                            placeholder="Password"
-                            secureTextEntry
-                            style={{ marginBottom: 16 }}
-                            onChangeText={onChange}
-                            value={value}
-                            errorMessage={errors.password?.message}
-                        />
-                    )}
-                />
-                <Controller
-                    control={control}
-                    name="password_confirm"
-                    render={({ field: { onChange, value } }) => (
-                        <Input
-                            placeholder="Confirm password"
-                            secureTextEntry
-                            style={{ marginBottom: 16 }}
-                            onChangeText={onChange}
-                            value={value}
-                            onSubmitEditing={handleSubmit(handleSignUp)}
-                            returnKeyType="send"
-                            errorMessage={errors.password_confirm?.message}
-                        />
-                    )}
-                />
+            {isLoading ? (
+                <Loading />
+            ) : (
+                <Form>
+                    <FormTitle>Create your account</FormTitle>
 
-                <Button
-                    title="Create and access"
-                    onPress={handleSubmit(handleSignUp)}
-                />
-            </Form>
+                    <Controller
+                        control={control}
+                        name="name"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Name"
+                                autoCapitalize="none"
+                                style={{ marginBottom: 16 }}
+                                onChangeText={onChange}
+                                value={value}
+                                errorMessage={errors.name?.message}
+                            />
+                        )}
+                    />
+                    <Controller
+                        control={control}
+                        name="username"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Username"
+                                autoCapitalize="none"
+                                style={{ marginBottom: 16 }}
+                                onChangeText={onChange}
+                                value={value}
+                                errorMessage={errors.username?.message}
+                            />
+                        )}
+                    />
+                    <Controller
+                        control={control}
+                        name="email"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="E-mail"
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                                style={{ marginBottom: 16 }}
+                                onChangeText={onChange}
+                                value={value}
+                                errorMessage={errors.email?.message}
+                            />
+                        )}
+                    />
+                    <Controller
+                        control={control}
+                        name="password"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Password"
+                                secureTextEntry
+                                style={{ marginBottom: 16 }}
+                                onChangeText={onChange}
+                                value={value}
+                                errorMessage={errors.password?.message}
+                            />
+                        )}
+                    />
+                    <Controller
+                        control={control}
+                        name="password_confirm"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Confirm password"
+                                secureTextEntry
+                                style={{ marginBottom: 16 }}
+                                onChangeText={onChange}
+                                value={value}
+                                onSubmitEditing={handleSubmit(handleSignUp)}
+                                returnKeyType="send"
+                                errorMessage={errors.password_confirm?.message}
+                            />
+                        )}
+                    />
+
+                    <Button
+                        title="Create and access"
+                        onPress={handleSubmit(handleSignUp)}
+                    />
+                </Form>
+            )}
 
             <ReturnLoginContainer>
                 <Button
