@@ -10,6 +10,7 @@ import { api } from "@services/api";
 import axios from "axios";
 import { Alert } from "react-native";
 import { AppError } from "@utils/AppError";
+import { useAuth } from "@hooks/useAuth";
 
 type FormDataProps = {
     name: string;
@@ -42,6 +43,8 @@ export default function SignUp() {
         resolver: yupResolver(signUpSchema),
     });
 
+    const { signIn } = useAuth();
+
     const navigation = useNavigation();
 
     function handleReturnLogin() {
@@ -55,13 +58,13 @@ export default function SignUp() {
         password,
     }: FormDataProps) {
         try {
-            const response = await api.post("/players", {
+            await api.post("/players", {
                 name,
                 username,
                 email,
                 password,
             });
-            console.log(await response.data);
+            await signIn(email, password);
         } catch (error) {
             const isAppError = error instanceof AppError;
             const alertMessage = isAppError
