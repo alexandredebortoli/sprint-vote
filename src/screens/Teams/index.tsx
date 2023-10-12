@@ -24,8 +24,8 @@ export default function Teams() {
         navigation.navigate("newTeam");
     }
 
-    function handleOpenTeam(teamId: string) {
-        navigation.navigate("team", { teamId });
+    function handleOpenTeam(teamId: string, teamName: string) {
+        navigation.navigate("team", { teamId, teamName });
     }
 
     async function fetchTeams() {
@@ -64,7 +64,7 @@ export default function Teams() {
                     renderItem={({ item }) => (
                         <TeamCard
                             title={item.name}
-                            onPress={() => handleOpenTeam(item.id)}
+                            onPress={() => handleOpenTeam(item.id, item.name)}
                         />
                     )}
                     contentContainerStyle={teams.length === 0 && { flex: 1 }}

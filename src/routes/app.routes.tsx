@@ -11,7 +11,7 @@ import Teams from "@screens/Teams";
 type AppRoutes = {
     teams: undefined;
     newTeam: undefined;
-    team: { teamId: string };
+    team: { teamId: string; teamName: string };
     game: undefined;
 };
 
