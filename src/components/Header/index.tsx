@@ -7,6 +7,7 @@ import {
     SignOutIcon,
 } from "./styles";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "@hooks/useAuth";
 
 type Props = {
     showBackButton?: boolean;
@@ -21,8 +22,15 @@ export default function Header({
 }: Props) {
     const navigation = useNavigation();
 
+    const { signOut } = useAuth();
+
     function handleGoBack() {
         goHome ? navigation.navigate("teams") : navigation.goBack();
+    }
+
+    function handleProfile() {
+        // navigation.navigate("profile");
+        console.log("profile page");
     }
 
     const headerContent = {
@@ -37,7 +45,12 @@ export default function Header({
                     <BackIcon />
                 </HeaderButton>
             )}
-            <HeaderButton>{headerContent[variant]}</HeaderButton>
+            <HeaderButton
+                // onPress={variant === "signout" ? signOut : handleProfile}
+                onPress={signOut}
+            >
+                {headerContent[variant]}
+            </HeaderButton>
         </Container>
     );
 }
