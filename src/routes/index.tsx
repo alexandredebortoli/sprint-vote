@@ -5,15 +5,20 @@ import { AuthRoutes } from "./auth.routes";
 import { AppRoutes } from "./app.routes";
 
 import { useAuth } from "@hooks/useAuth";
+import Loading from "@components/Loading";
 
 export function Routes() {
     const { COLORS } = useTheme();
-    const { user } = useAuth();
+    const { token, isLoadingUserStorageData } = useAuth();
+
+    if (isLoadingUserStorageData) {
+        return <Loading />;
+    }
 
     return (
         <View style={{ flex: 1, backgroundColor: COLORS.GRAY_600 }}>
             <NavigationContainer>
-                {user.access_token ? <AppRoutes /> : <AuthRoutes />}
+                {!!token ? <AppRoutes /> : <AuthRoutes />}
             </NavigationContainer>
         </View>
     );
