@@ -22,8 +22,8 @@ export default function Teams() {
         navigation.navigate("newTeam");
     }
 
-    function handleOpenTeam() {
-        navigation.navigate("team");
+    function handleOpenTeam(teamId: string) {
+        navigation.navigate("team", { teamId });
     }
 
     async function fetchTeams() {
