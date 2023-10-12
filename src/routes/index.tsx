@@ -9,7 +9,7 @@ import Loading from "@components/Loading";
 
 export function Routes() {
     const { COLORS } = useTheme();
-    const { token, isLoadingUserStorageData } = useAuth();
+    const { user, isLoadingUserStorageData } = useAuth();
 
     if (isLoadingUserStorageData) {
         return <Loading />;
@@ -18,7 +18,7 @@ export function Routes() {
     return (
         <View style={{ flex: 1, backgroundColor: COLORS.GRAY_600 }}>
             <NavigationContainer>
-                {!!token ? <AppRoutes /> : <AuthRoutes />}
+                {user.id ? <AppRoutes /> : <AuthRoutes />}
             </NavigationContainer>
         </View>
     );

@@ -5,7 +5,7 @@ export declare global {
             signUp: undefined;
             teams: undefined;
             newTeam: undefined;
-            team: undefined;
+            team: { teamId: string; teamName: string };
             game: undefined;
         }
     }
