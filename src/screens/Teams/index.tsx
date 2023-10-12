@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { FlatList } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert, FlatList } from "react-native";
 
 import { Container } from "./styles";
 
@@ -9,9 +9,12 @@ import TeamCard from "@components/TeamCard";
 import EmptyList from "@components/EmptyList";
 import { Button } from "@components/Button";
 import { useNavigation } from "@react-navigation/native";
+import { api } from "@services/api";
+import { AppError } from "@utils/AppError";
+import { TeamsDTO } from "@dtos/teams.dto";
 
 export default function Teams() {
-    const [teams, setTeams] = useState<string[]>(["Team 1", "Team 2"]);
+    const [teams, setTeams] = useState<TeamsDTO[]>([]);
 
     const navigation = useNavigation();
 
@@ -22,6 +25,23 @@ export default function Teams() {
     function handleOpenTeam() {
         navigation.navigate("team");
     }
+
+    async function fetchTeams() {
+        try {
+            const response = await api.get("/teams");
+            if (response.data) {
+                setTeams(response.data as TeamsDTO[]);
+            }
+        } catch (error) {
+            const isAppError = error instanceof AppError;
+            const message = isAppError ? error.message : "Unable to get teams.";
+            Alert.alert(message);
+        }
+    }
+
+    useEffect(() => {
+        fetchTeams();
+    }, []);
 
     return (
         <Container>
@@ -34,11 +54,11 @@ export default function Teams() {
 
             <FlatList
                 data={teams}
-                keyExtractor={(item) => item}
+                keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                     <TeamCard
-                        title={item}
-                        onPress={handleOpenTeam}
+                        title={item.name}
+                        onPress={() => handleOpenTeam(item.id)}
                     />
                 )}
                 contentContainerStyle={teams.length === 0 && { flex: 1 }}
