@@ -17,9 +17,9 @@ export default function Input({
 
     const isInvalid = !!errorMessage;
 
-    return (
+    return isInvalid ? (
         <Container {...rest}>
-            {isInvalid && <ErrorMessage>{errorMessage}</ErrorMessage>}
+            <ErrorMessage>{errorMessage}</ErrorMessage>
             <CustomInput
                 ref={inputRef}
                 placeholderTextColor={theme.COLORS.GRAY_300}
@@ -27,5 +27,12 @@ export default function Input({
                 $isInvalid={isInvalid}
             />
         </Container>
+    ) : (
+        <CustomInput
+            ref={inputRef}
+            placeholderTextColor={theme.COLORS.GRAY_300}
+            {...rest}
+            $isInvalid={isInvalid}
+        />
     );
 }
