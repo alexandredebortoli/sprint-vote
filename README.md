@@ -114,6 +114,11 @@ This will launch the development server and provide options to visualize the app
 
 You should now have both the API and the app up and running, allowing you to interact with the application.
 
+
+#### Running the Application Example
+
+https://github.com/alexandredebortoli/sprint-vote/assets/70496543/4584217e-6231-49d1-af99-1f69fbcdca9a
+
 ## Dependencies
 
 ### Backend Dependencies
