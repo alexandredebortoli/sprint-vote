@@ -39,7 +39,7 @@ Join the SprintVote community and revolutionize your agile planning process toda
 
 | Auth Navigation  | App Navigation |
 | ------------- | ------------- |
-| <video src="https://github.com/alexandredebortoli/sprint-vote/assets/70496543/f2b1dc32-b7ee-4186-9c42-e1d6fee3cc8e">  | <video src="https://github.com/alexandredebortoli/sprint-vote/assets/70496543/9d15ba0b-2c1a-4697-936b-325b752d511c">|
+| <video src="https://github.com/alexandredebortoli/sprint-vote/assets/70496543/7f877b7a-8878-46b4-b4c9-ef927b907dd2">  | <video src="https://github.com/alexandredebortoli/sprint-vote/assets/70496543/9d15ba0b-2c1a-4697-936b-325b752d511c">|
 
 ## Setup and Prerequisites
 
