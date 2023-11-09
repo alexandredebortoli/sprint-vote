@@ -29,9 +29,8 @@ export class TeamsService {
     const team = await this.teamRepository.findOne({ where: { id } });
 
     if (!team) {
-      const errorMessage = `Team #${id} not found`;
-      this.logger.error(errorMessage);
-      throw new NotFoundException(errorMessage);
+      this.logger.error(`Team #${id} not found`);
+      throw new NotFoundException('team_not_found');
     }
 
     return team;
@@ -42,9 +41,8 @@ export class TeamsService {
     const team = await this.teamRepository.findOne({ where: { id } });
 
     if (!team) {
-      const errorMessage = `Team #${id} not found`;
-      this.logger.error(errorMessage);
-      throw new NotFoundException(errorMessage);
+      this.logger.error(`Team #${id} not found`);
+      throw new NotFoundException('team_not_found');
     }
 
     await this.teamRepository.delete(team);
