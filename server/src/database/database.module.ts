@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { Team } from '../teams/entities/team.entity';
+import { TeamEntity } from './entities/team.entity';
+import { PlayerEntity } from './entities/player.entity';
+import { TeamsPlayersEntity } from './entities/teams-players.entity';
 
 @Module({
   imports: [
@@ -14,7 +16,7 @@ import { Team } from '../teams/entities/team.entity';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
         synchronize: configService.get<boolean>('DB_SYNC'),
-        entities: [Team],
+        entities: [TeamEntity, PlayerEntity, TeamsPlayersEntity],
         logging: configService.get<string>('NODE_ENV') === 'development',
       }),
       inject: [ConfigService],
