@@ -117,7 +117,7 @@ describe('TeamsService', () => {
 
       jest.spyOn(mockTeamRepository, 'findOne').mockResolvedValue(team);
 
-      const result = await service.remove('1');
+      await service.remove('1');
 
       expect(mockTeamRepository.findOne).toHaveBeenCalledWith({
         where: { id: '1' },
