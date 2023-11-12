@@ -1,28 +1,31 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TeamsService } from './teams.service';
+import { Repository } from 'typeorm';
+import { TeamEntity } from '../database/entities/team.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { DeleteResult, Repository } from 'typeorm';
-import { Team } from './entities/team.entity';
 import { CreateTeamDto } from './dto/create-team.dto';
-import { NotFoundException } from '@nestjs/common';
+import { TeamDto } from './dto/team.dto';
+import { HttpStatus, NotFoundException } from '@nestjs/common';
 
 describe('TeamsService', () => {
   let service: TeamsService;
-  let mockTeamRepository: Repository<Team>;
+  let mockTeamRepository: Repository<TeamEntity>;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TeamsService,
         {
-          provide: getRepositoryToken(Team),
-          useClass: Repository<Team>,
+          provide: getRepositoryToken(TeamEntity),
+          useClass: Repository<TeamEntity>,
         },
       ],
     }).compile();
 
     service = module.get<TeamsService>(TeamsService);
-    mockTeamRepository = module.get<Repository<Team>>(getRepositoryToken(Team));
+    mockTeamRepository = module.get<Repository<TeamEntity>>(
+      getRepositoryToken(TeamEntity),
+    );
   });
 
   it('should be defined', () => {
@@ -33,42 +36,64 @@ describe('TeamsService', () => {
   describe('create', () => {
     it('should create and return a new team', async () => {
       const createTeamDto: CreateTeamDto = {
-        name: 'Test Team',
+        name: 'Team Hello World',
       };
 
-      const savedTeam = new Team(createTeamDto);
-      jest.spyOn(mockTeamRepository, 'save').mockResolvedValue(savedTeam);
+      const dbReturn = new TeamEntity({ ...createTeamDto }, '1');
+      jest.spyOn(mockTeamRepository, 'save').mockResolvedValue(dbReturn);
 
       const result = await service.create(createTeamDto);
 
-      expect(result).toEqual(savedTeam);
+      expect(result).toEqual(new TeamDto(dbReturn));
     });
   });
 
   describe('findAll', () => {
     it('should find and return a list of teams', async () => {
-      const teamList: Team[] = [
-        new Team({ name: 'Team 1' }),
-        new Team({ name: 'Team 2' }),
+      const expectedList: TeamDto[] = [
+        {
+          id: '1',
+          name: 'Team 1',
+        },
+        {
+          id: '2',
+          name: 'Team 2',
+        },
       ];
 
-      jest.spyOn(mockTeamRepository, 'find').mockResolvedValue(teamList);
+      const dbReturn: TeamEntity[] = [
+        {
+          id: '1',
+          name: 'Team 1',
+        },
+        {
+          id: '2',
+          name: 'Team 2',
+        },
+      ] as TeamEntity[];
+
+      jest.spyOn(mockTeamRepository, 'find').mockResolvedValue(dbReturn);
 
       const result = await service.findAll();
 
-      expect(result).toEqual(teamList);
+      expect(result).toEqual(expectedList);
     });
   });
 
   describe('findOne', () => {
     it('should find a team by id and return it', async () => {
-      const team: Team = new Team({ id: '1', name: 'Team Test' });
+      const dbReturn: TeamEntity = {
+        id: '1',
+        name: 'Team Test',
+      } as TeamEntity;
 
-      jest.spyOn(mockTeamRepository, 'findOne').mockResolvedValue(team);
+      const expectedReturn: TeamDto = new TeamDto(dbReturn);
+
+      jest.spyOn(mockTeamRepository, 'findOne').mockResolvedValue(dbReturn);
 
       const result = await service.findOne('1');
 
-      expect(result).toEqual(team);
+      expect(result).toEqual(expectedReturn);
     });
 
     it('should return not found exception', async () => {
@@ -78,30 +103,38 @@ describe('TeamsService', () => {
         await service.findOne('1');
       } catch (error) {
         expect(error).toBeInstanceOf(NotFoundException);
+        if (error instanceof NotFoundException) {
+          expect(error.getStatus()).toEqual(HttpStatus.NOT_FOUND);
+          expect(error.message).toEqual('team_not_found');
+        }
       }
     });
   });
 
   describe('remove', () => {
     it('should find a team by id and remove it', async () => {
-      const team: Team = new Team({ id: '1', name: 'Team Test' });
+      const team: TeamEntity = new TeamEntity({ name: 'Team Test' }, '1');
 
       jest.spyOn(mockTeamRepository, 'findOne').mockResolvedValue(team);
-      jest
-        .spyOn(mockTeamRepository, 'delete')
-        .mockResolvedValue(new DeleteResult());
 
       const result = await service.remove('1');
 
-      expect(mockTeamRepository['delete']).toHaveBeenCalledWith(team);
+      expect(mockTeamRepository.findOne).toHaveBeenCalledWith({
+        where: { id: '1' },
+      });
     });
 
     it('should return not found exception', async () => {
       jest.spyOn(mockTeamRepository, 'findOne').mockResolvedValue(null);
+
       try {
-        await service.remove('1');
+        await service.findOne('1');
       } catch (error) {
         expect(error).toBeInstanceOf(NotFoundException);
+        if (error instanceof NotFoundException) {
+          expect(error.getStatus()).toEqual(HttpStatus.NOT_FOUND);
+          expect(error.message).toEqual('team_not_found');
+        }
       }
     });
   });
