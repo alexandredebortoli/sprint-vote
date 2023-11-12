@@ -8,10 +8,10 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { CreateTeamDto } from './dto/create-team.dto';
-import { Team } from './entities/team.entity';
-import { TeamsService } from './teams.service';
 import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { TeamsService } from './teams.service';
+import { TeamDto } from './dto/team.dto';
+import { CreateTeamDto } from './dto/create-team.dto';
 
 @ApiTags('teams')
 @Controller('teams')
@@ -23,10 +23,10 @@ export class TeamsController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The created team',
-    type: Team,
+    type: TeamDto,
   })
-  async create(@Body() createTeamDto: CreateTeamDto): Promise<Team> {
-    return await this.teamsService.create(createTeamDto);
+  create(@Body() createTeamDto: CreateTeamDto): Promise<TeamDto> {
+    return this.teamsService.create(createTeamDto);
   }
 
   @Get()
@@ -34,10 +34,10 @@ export class TeamsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The list of teams',
-    type: [Team],
+    type: [TeamDto],
   })
-  async findAll(): Promise<Team[]> {
-    return await this.teamsService.findAll();
+  findAll(): Promise<TeamDto[]> {
+    return this.teamsService.findAll();
   }
 
   @Get(':id')
@@ -45,13 +45,13 @@ export class TeamsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The found team',
-    type: Team,
+    type: TeamDto,
   })
   @ApiNotFoundResponse({
     description: 'The team was not found',
   })
-  async findOne(@Param('id') id: string): Promise<Team> {
-    return await this.teamsService.findOne(id);
+  findOne(@Param('id') id: string): Promise<TeamDto> {
+    return this.teamsService.findOne(id);
   }
 
   @Delete(':id')
