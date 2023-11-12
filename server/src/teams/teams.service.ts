@@ -1,30 +1,35 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { CreateTeamDto } from './dto/create-team.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Team } from './entities/team.entity';
+import { TeamEntity } from '../database/entities/team.entity';
 import { Repository } from 'typeorm';
+import { CreateTeamDto } from './dto/create-team.dto';
+import { TeamDto } from './dto/team.dto';
 
 @Injectable()
 export class TeamsService {
   private readonly logger = new Logger(TeamsService.name);
 
   constructor(
-    @InjectRepository(Team)
-    private readonly teamRepository: Repository<Team>,
+    @InjectRepository(TeamEntity)
+    private readonly teamRepository: Repository<TeamEntity>,
   ) {}
 
-  async create(createPlayerDto: CreateTeamDto): Promise<Team> {
-    this.logger.log(`Creating a new team, ${JSON.stringify(createPlayerDto)}`);
-    const team = new Team(createPlayerDto);
-    return await this.teamRepository.save(team);
+  async create(createTeamDto: CreateTeamDto): Promise<TeamDto> {
+    this.logger.log(`Creating a new team, ${JSON.stringify(createTeamDto)}`);
+
+    const newTeam = new TeamEntity(createTeamDto);
+    const createdTeam = await this.teamRepository.save(newTeam);
+    return new TeamDto(createdTeam);
   }
 
-  async findAll(): Promise<Team[]> {
+  async findAll(): Promise<TeamDto[]> {
     this.logger.log(`Finding all teams`);
-    return await this.teamRepository.find();
+    const teamsFound = await this.teamRepository.find();
+    const teamsFormatted = teamsFound.map((team) => new TeamDto(team));
+    return teamsFormatted;
   }
 
-  async findOne(id: string): Promise<Team> {
+  async findOne(id: string): Promise<TeamDto> {
     this.logger.log(`Finding team #${id}`);
     const team = await this.teamRepository.findOne({ where: { id } });
 
@@ -33,18 +38,21 @@ export class TeamsService {
       throw new NotFoundException('team_not_found');
     }
 
-    return team;
+    return new TeamDto(team);
   }
 
   async remove(id: string): Promise<void> {
     this.logger.log(`Removing team #${id}`);
-    const team = await this.teamRepository.findOne({ where: { id } });
+    const team = await this.teamRepository.findOne({
+      where: { id },
+    });
 
     if (!team) {
       this.logger.error(`Team #${id} not found`);
       throw new NotFoundException('team_not_found');
     }
 
-    await this.teamRepository.delete(team);
+    // Todo: Safely delete teamsPlayers before deleting team
+    // await this.teamRepository.delete(team as TeamEntity);
   }
 }
