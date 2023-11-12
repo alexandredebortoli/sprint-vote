@@ -83,7 +83,7 @@ describe('PlayersController', () => {
   });
 
   describe('findAll', () => {
-    it('should find and return a list of teams with status 200 - OK', async () => {
+    it('should find and return a list of players with status 200 - OK', async () => {
       const playerList: PlayerDto[] = [
         {
           id: '1',
