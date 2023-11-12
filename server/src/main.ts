@@ -24,7 +24,7 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT || 3333, '0.0.0.0', () => {
     Logger.log(
-      `Server running at http://0.0.0.0:${process.env.PORT}`,
+      `Server running at http://0.0.0.0:${process.env.PORT || 3333}`,
       'ServerApplication',
     );
   });
