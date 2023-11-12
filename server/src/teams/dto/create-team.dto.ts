@@ -2,7 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
 export class CreateTeamDto {
-  @ApiProperty({ example: 'Team 1', description: 'The name of the Team' })
+  @ApiProperty({
+    example: 'Team Hello World',
+    description: 'The name of the team',
+  })
   @IsString()
-  readonly name!: string;
+  name!: string;
 }

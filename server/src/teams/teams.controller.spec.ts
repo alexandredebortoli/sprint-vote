@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { HttpStatus, NotFoundException } from '@nestjs/common';
 import { TeamsController } from './teams.controller';
 import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
-import { Team } from './entities/team.entity';
-import { HttpStatus, NotFoundException } from '@nestjs/common';
+import { TeamDto } from './dto/team.dto';
+import { TeamEntity } from '../database/entities/team.entity';
 
 describe('TeamsController', () => {
   let controller: TeamsController;
@@ -39,24 +40,33 @@ describe('TeamsController', () => {
   describe('create', () => {
     it('should create a new team and return status 201 - CREATED', async () => {
       const createTeamDto: CreateTeamDto = {
-        name: 'Test Team',
+        name: 'Team Hello World',
       };
-      const createdTeam: Team = new Team(createTeamDto);
+      const team: TeamDto = new TeamDto({
+        ...createTeamDto,
+        id: '1',
+      } as TeamEntity);
 
-      jest.spyOn(teamsService, 'create').mockResolvedValue(createdTeam);
+      jest.spyOn(teamsService, 'create').mockResolvedValue(team);
 
       const result = await controller.create(createTeamDto);
 
-      expect(result).toBe(createdTeam);
+      expect(result).toBe(team);
       expect(HttpStatus.CREATED);
     });
   });
 
   describe('findAll', () => {
     it('should find and return a list of teams with status 200 - OK', async () => {
-      const teamList: Team[] = [
-        new Team({ name: 'Team 1' }),
-        new Team({ name: 'Team 2' }),
+      const teamList: TeamDto[] = [
+        {
+          id: '1',
+          name: 'Player 1',
+        },
+        {
+          id: '2',
+          name: 'Player 2',
+        },
       ];
 
       jest.spyOn(teamsService, 'findAll').mockResolvedValue(teamList);
@@ -70,7 +80,10 @@ describe('TeamsController', () => {
 
   describe('findOne', () => {
     it('should find a team by id and return it with status 200 - OK', async () => {
-      const team: Team = new Team({ id: '1', name: 'Team Test' });
+      const team: TeamDto = new TeamDto({
+        id: '1',
+        name: 'Player Test',
+      } as TeamEntity);
 
       jest.spyOn(teamsService, 'findOne').mockResolvedValue(team);
 
@@ -89,19 +102,20 @@ describe('TeamsController', () => {
         await controller.findOne('1');
       } catch (error) {
         expect(error).toBeInstanceOf(NotFoundException);
-      } finally {
-        expect(HttpStatus.NOT_FOUND);
+        if (error instanceof NotFoundException) {
+          expect(error.getStatus()).toBe(HttpStatus.NOT_FOUND);
+        }
       }
     });
   });
 
   describe('remove', () => {
-    it('should find a team by id and remove it returning status 204 - NO CONTENT', async () => {
+    it('should find a team by id and delete it returning status 204 - NO CONTENT', async () => {
       jest.spyOn(teamsService, 'remove').mockResolvedValue();
 
       await controller.remove('1');
 
-      expect(HttpStatus.NO_CONTENT);
+      expect(teamsService.remove).toHaveBeenCalledWith('1');
     });
 
     it('should return not found exception status 404 - NOT FOUND', async () => {
@@ -109,11 +123,12 @@ describe('TeamsController', () => {
         .spyOn(teamsService, 'remove')
         .mockRejectedValue(new NotFoundException());
       try {
-        await controller.remove('1');
+        await controller.remove('-1');
       } catch (error) {
         expect(error).toBeInstanceOf(NotFoundException);
-      } finally {
-        expect(HttpStatus.NOT_FOUND);
+        if (error instanceof NotFoundException) {
+          expect(error.getStatus()).toBe(HttpStatus.NOT_FOUND);
+        }
       }
     });
   });
