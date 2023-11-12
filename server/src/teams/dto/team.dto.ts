@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { TeamEntity } from 'src/database/entities/team.entity';
 
 export class TeamDto {
   @ApiProperty({
@@ -12,4 +13,9 @@ export class TeamDto {
     description: 'The name of the team',
   })
   name!: string;
+
+  constructor(partial: Partial<TeamEntity>) {
+    partial.id && (this.id = partial.id);
+    partial.name && (this.name = partial.name);
+  }
 }
