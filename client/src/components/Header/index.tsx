@@ -17,7 +17,7 @@ type Props = {
 
 export default function Header({
     showBackButton = false,
-    variant = "profile",
+    variant = "signout",
     goHome = false,
 }: Props) {
     const navigation = useNavigation();
@@ -46,8 +46,7 @@ export default function Header({
                 </HeaderButton>
             )}
             <HeaderButton
-                // onPress={variant === "signout" ? signOut : handleProfile}
-                onPress={signOut}
+                onPress={variant === "signout" ? signOut : handleProfile}
             >
                 {headerContent[variant]}
             </HeaderButton>

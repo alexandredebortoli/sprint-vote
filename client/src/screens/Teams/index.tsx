@@ -8,17 +8,19 @@ import Highlight from "@components/Highlight";
 import TeamCard from "@components/TeamCard";
 import EmptyList from "@components/EmptyList";
 import { Button } from "@components/Button";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { api } from "@services/api";
 import { AppError } from "@utils/AppError";
 import { TeamsDTO } from "@dtos/teams.dto";
 import Loading from "@components/Loading";
+import React from "react";
 
 export default function Teams() {
     const [teams, setTeams] = useState<TeamsDTO[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const navigation = useNavigation();
+    const isFocused = useIsFocused();
 
     function handleNewTeam() {
         navigation.navigate("newTeam");
@@ -44,7 +46,7 @@ export default function Teams() {
 
     useEffect(() => {
         fetchTeams();
-    }, []);
+    }, [isFocused]);
 
     return (
         <Container>

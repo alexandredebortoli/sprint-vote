@@ -36,7 +36,7 @@ export default function Team() {
 
     const { teamId, teamName = "Team Name" } = route.params as RouteParamsProps;
 
-    const { token } = useAuth();
+    // const { token } = useAuth();
 
     function handleStartGame() {
         navigation.navigate("game");
@@ -81,7 +81,10 @@ export default function Team() {
 
     return (
         <Container>
-            <Header showBackButton />
+            <Header
+                showBackButton
+                goHome
+            />
 
             <Highlight
                 title={teamName}
