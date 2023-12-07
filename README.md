@@ -55,12 +55,14 @@ To run the application, you'll need to set up and run both the API and the app c
 
 ### Running the API (Backend)
 
+> Note: A `.env` file with the environment variables is required to run the api
+
 1. **Navigate to the API Directory**
 
-Open your terminal and from the root directory navigate to the `server` directory.
+Open your terminal and from the root directory navigate to the `api` directory.
 
 ```bash
-cd server
+cd api
 ```
 
 2. **Install Dependencies**
@@ -73,7 +75,7 @@ yarn
 
 3. **Set Up the Database**
 
-While still in the `server` directory, start the PostgreSQL database in a Docker container.
+While still in the `api` directory, start the PostgreSQL database in a Docker container.
 
 ```bash
 docker-compose up -d
