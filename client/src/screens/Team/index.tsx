@@ -93,6 +93,22 @@ export default function Team() {
         }
     }
 
+    async function handleRemovePlayer(team: string, playerId: string) {
+        try {
+            setIsLoading(true);
+            await api.delete(`/teams/${team}/players/${playerId}`);
+            fetchTeamMembers();
+        } catch (error) {
+            const isAppError = error instanceof AppError;
+            const message = isAppError
+                ? error.message
+                : "Unable to remove player.";
+            Alert.alert(message);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     useEffect(() => {
         fetchTeamMembers();
         fetchTeamGameHistory();
@@ -157,7 +173,9 @@ export default function Team() {
                             }
                             icon={"person"}
                             closable
-                            onRemove={() => {}}
+                            onRemove={() => {
+                                handleRemovePlayer(teamId, item.id);
+                            }}
                         />
                     )}
                     ListEmptyComponent={() => (
