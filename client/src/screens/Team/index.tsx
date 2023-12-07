@@ -29,6 +29,7 @@ export default function Team() {
     const [players, setPlayers] = useState<PlayerSummaryDTO[]>([]);
     const [games, setGames] = useState<GameSummaryDTO[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [playerToAdd, setPlayerToAdd] = useState<string>("");
 
     const navigation = useNavigation();
 
@@ -74,6 +75,24 @@ export default function Team() {
         }
     }
 
+    async function handleAddPlayer() {
+        try {
+            setIsLoading(true);
+            await api.post(`/teams/${teamId}/players`, {
+                username: playerToAdd,
+            });
+            fetchTeamMembers();
+        } catch (error) {
+            const isAppError = error instanceof AppError;
+            const message = isAppError
+                ? error.message
+                : "Unable to add player.";
+            Alert.alert(message);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     useEffect(() => {
         fetchTeamMembers();
         fetchTeamGameHistory();
@@ -95,9 +114,14 @@ export default function Team() {
                 <Input
                     placeholder="Team member username"
                     autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={setPlayerToAdd}
                     returnKeyType="done"
                 />
-                <ButtonIcon icon="add" />
+                <ButtonIcon
+                    icon="add"
+                    onPress={handleAddPlayer}
+                />
             </Form>
 
             <HeaderList>
