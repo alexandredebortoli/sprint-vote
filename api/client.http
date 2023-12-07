@@ -1,0 +1,57 @@
+@baseUrl = http://localhost:3333
+@authToken = {{authenticate.response.body.access_token}}
+@teamId = 082ee0b3-8cf8-465f-bc96-80463ee105ee
+
+# @name create_player
+POST {{baseUrl}}/players
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "username": "johndoe",
+    "email": "johndoe@example.com",
+    "password": "123456"
+}
+
+###
+
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+    "email": "foobar@email.com",
+    "password": "123456"
+}
+
+###
+
+# @name create_team
+POST {{baseUrl}}/teams
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Squad Hello World"
+}
+
+###
+
+# @name fetch_teams
+GET {{baseUrl}}/teams
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name fetch_team_players
+GET {{baseUrl}}/teams/{{teamId}}/players
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name fetch_team_game_history
+GET {{baseUrl}}/teams/{{teamId}}/games
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
